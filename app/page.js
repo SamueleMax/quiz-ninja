@@ -4,7 +4,6 @@ import { Typography, Table, Tag } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
 
 const { Title, Text, Link } = Typography;
-const { Column } = Table;
 
 export default function Home() {
   const exercises = [
@@ -31,24 +30,24 @@ export default function Home() {
   ]
 
   return (
-    <main style={{maxWidth: '1000px', margin: 'auto'}}>
+    <main style={{maxWidth: "1000px", margin: "auto"}}>
       <Title>Quiz Ninja</Title>
       <Table dataSource={exercises}>
-        <Column title="Esercizio" dataIndex="title" key="title" />
-        <Column
+        <Table.Column title="Esercizio" dataIndex="title" key="title" />
+        <Table.Column
           title="Stato"
           dataIndex="status"
           key="status"
-          render={(status) => (
+          render={status => (
             status === 'complete'
               ? <Tag color="green">Completato</Tag>
               : <Tag color="red">Da completare</Tag>
           )}
         />
-        <Column
+        <Table.Column
           title="Azione"
           key="action"
-          render={(exercise) => (
+          render={exercise => (
             exercise.status === 'incomplete'
               ? <Link href="/exercise">Completa <ArrowRightOutlined /></Link>
               : <Link href="/exercise">Visualizza</Link>
