@@ -1,7 +1,7 @@
-import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 
 export const metadata = {
-  title: "Quiz Ninja",
+  title: 'Quiz Ninja',
 };
 
 export default function RootLayout({ children }) {
