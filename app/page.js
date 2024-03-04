@@ -45,8 +45,8 @@ export default function Home() {
           )}
         />
         <Table.Column
-          title="Azione"
-          key="action"
+          title="Visualizza"
+          key="view"
           render={exercise => (
             exercise.status === 'incomplete'
               ? <Link href="/exercise">Completa <ArrowRightOutlined /></Link>
