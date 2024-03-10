@@ -1,11 +1,10 @@
 'use client'
 
-import { Typography, Table, Button, Modal, Flex } from 'antd';
-import { DeleteOutlined, PlusOutlined, FundViewOutlined, EditOutlined } from '@ant-design/icons';
+import { Typography, Input, Form, Radio, Space, Checkbox, Select, Button } from 'antd';
 
 const { Title, Text, Link } = Typography;
 
-export default function Dashboard() {
+export default function Edit() {
   const exercise = {
     id: 1,
     title: 'Le variabili',
@@ -69,46 +68,26 @@ export default function Dashboard() {
   return (
     <main style={{maxWidth: "1000px", margin: "auto"}}>
       <Title>Dashboard</Title>
-      <Flex gap={10} style={{marginBottom: '1rem'}}>
-        <Button type="primary">Nuovo esercizio <PlusOutlined /></Button>
-        <Button danger>Elimina selezionati <DeleteOutlined /></Button>
-      </Flex>
-      <Table
-        dataSource={exercises}
-        rowSelection={{
-          getCheckboxProps: item => ({
-            name: item.name,
-          }),
+      <Form
+        autoComplete="off"
+        layout="vertical"
+        initialValues={{
+          title: exercise.title,
         }}
       >
-        <Table.Column title="Esercizio" dataIndex="title" key="title" />
-        <Table.Column
-          title="Azione"
-          key="action"
-          render={exercise => (
-            <Flex gap={25}>
-              <Link
-                onClick={() => {
-                  Modal.confirm({
-                    title: 'Conferma eliminazione',
-                    content: 'Vuoi davvero eliminare l\'esercizio?',
-                    footer: (_, { OkBtn, CancelBtn }) => (
-                      <>
-                        <CancelBtn />
-                        <OkBtn />
-                      </>
-                    )
-                  })
-                }}
-              >
-                <DeleteOutlined />
-              </Link>
-              <Link><EditOutlined /></Link>
-              <Link><FundViewOutlined /></Link>
-            </Flex>
-          )}
-        />
-      </Table>
+        <Form.Item
+          name="title"
+          label="Titolo"
+        >
+          <Input />
+        </Form.Item>
+        {exercise.questions.map(question => (
+          <Flex>
+            
+          </Flex>
+        ))}
+        <Button type="primary" htmlType="submit">Conferma</Button>
+      </Form>
     </main>
   );
 }
