@@ -1,6 +1,6 @@
 'use client'
 
-import { DeleteOutlined, InboxOutlined } from '@ant-design/icons';
+import { DeleteOutlined, InboxOutlined, EditOutlined } from '@ant-design/icons';
 import { Typography, Input, Form, Radio, Space, Checkbox, Select, Button, Flex, Popconfirm, Upload } from 'antd';
 
 const { Title, Text, Link } = Typography;
@@ -47,9 +47,7 @@ export default function Edit() {
         type: 'text',
         text: 'Inserisci la keyword mancante',
         code: `public class HelloWorld {
-  public static void main(String[] args) {
-    System.out._______("Hello, World!");
-  }
+  public static void main(String[]trans
 }`
       }
     ],
@@ -72,21 +70,43 @@ export default function Edit() {
           <Input />
         </Form.Item>
         {exercise.questions.map(question => (
-          <Flex vertical>
-            <Popconfirm
-              placement="topLeft"
-              title="Elimina domanda"
-              description="Vuoi veramente eliminare questa domanda?"
-              okText="Elimina"
-              cancelText="Annulla"
-            >
-              <Link><DeleteOutlined /></Link>
-            </Popconfirm>
+          <Flex gap={5} vertical>
+            <Flex gap={15} align="center">
+              <Popconfirm
+                placement="topLeft"
+                title="Elimina domanda"
+                description="Vuoi veramente eliminare questa domanda?"
+                okText="Elimina"
+                cancelText="Annulla"
+              >
+                <Link style={{fontSize: '1.2rem'}}><DeleteOutlined /></Link>
+              </Popconfirm>
+              <Select
+                style={{width: '10rem'}}
+                options={[
+                  {
+                    value: 'radio',
+                    label: 'Radio',
+                  },
+                  {
+                    value: 'checkbox',
+                    label: 'Checkbox',
+                  },
+                  {
+                    value: 'text',
+                    label: 'Text',
+                  },
+                ]}
+              />
+            </Flex>
             <Form.Item
               key={question.id}
               name={question.id}
               label={question.text}
             >
+              {'code' in question && (
+                <Input.TextArea rows={4} style={{marginBottom: '1rem'}} />
+              )}
               {question.type === 'radio' && (
                 <Radio.Group>
                   <Space direction="vertical">
