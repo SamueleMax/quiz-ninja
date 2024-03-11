@@ -84,8 +84,9 @@ export default function Edit() {
         >
           <Input />
         </Form.Item>
+        {/* TODO: Create a Form.Item for every input, so one for the question, one for each answer I think? */}
         {exercise.questions.map(question => (
-          <Flex gap={5} vertical>
+          <Flex gap={20} vertical>
             <Flex gap={15} align="center">
               <Popconfirm
                 placement="topLeft"
@@ -96,29 +97,33 @@ export default function Edit() {
               >
                 <Link style={{fontSize: '1.2rem'}}><DeleteOutlined /></Link>
               </Popconfirm>
-              <Select
-                style={{width: '10rem'}}
-                options={[
-                  {
-                    value: 'radio',
-                    label: 'Radio',
-                  },
-                  {
-                    value: 'checkbox',
-                    label: 'Checkbox',
-                  },
-                  {
-                    value: 'text',
-                    label: 'Text',
-                  },
-                ]}
-              />
+              {question.type !== 'upload' && (
+                <Select
+                  style={{width: '10rem'}}
+                  defaultValue={question.type}
+                  options={[
+                    {
+                      value: 'radio',
+                      label: 'Radio',
+                    },
+                    {
+                      value: 'checkbox',
+                      label: 'Checkbox',
+                    },
+                    {
+                      value: 'text',
+                      label: 'Text',
+                    },
+                  ]}
+                />
+              )}
             </Flex>
             <Form.Item
               key={question.id}
               name={question.id}
-              label={question.text}
             >
+              <Flex gap={10} vertical>
+              <Input defaultValue={question.text} />
               {'code' in question && (
                 <Input.TextArea rows={4} style={{marginBottom: '1rem'}} />
               )}
@@ -126,7 +131,10 @@ export default function Edit() {
                 <Radio.Group>
                   <Space direction="vertical">
                     {question.answers.map(answer => (
-                      <Radio key={answer.id} value={answer.id}>{answer.text}</Radio>
+                      <Flex gap={10}>
+                        <Radio key={answer.id} value={answer.id} />
+                        <Input defaultValue={answer.text} />
+                      </Flex>
                     ))}
                   </Space>
                 </Radio.Group>
@@ -135,7 +143,10 @@ export default function Edit() {
                 <Checkbox.Group>
                   <Space direction="vertical">
                     {question.answers.map(answer => (
-                      <Checkbox key={answer.id} value={answer.id}>{answer.text}</Checkbox>
+                      <Flex gap={18}>
+                        <Checkbox key={answer.id} value={answer.id} />
+                        <Input defaultValue={answer.text} />
+                      </Flex>
                     ))}
                   </Space>
                 </Checkbox.Group>
@@ -152,6 +163,7 @@ export default function Edit() {
                   <p className="ant-upload-hint">Dimensione massima: 1MB</p>
                 </Upload.Dragger>
               )}
+              </Flex>
             </Form.Item>
           </Flex>
         ))}
