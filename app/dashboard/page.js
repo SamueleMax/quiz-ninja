@@ -56,6 +56,8 @@ export default function Dashboard() {
                   Modal.confirm({
                     title: 'Conferma eliminazione',
                     content: 'Vuoi davvero eliminare l\'esercizio?',
+                    okText: 'Elimina',
+                    cancelText: 'Annulla',
                     footer: (_, { OkBtn, CancelBtn }) => (
                       <>
                         <CancelBtn />

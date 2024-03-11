@@ -1,6 +1,7 @@
 'use client'
 
-import { Typography, Input, Form, Radio, Space, Checkbox, Select, Button } from 'antd';
+import { DeleteOutlined, InboxOutlined } from '@ant-design/icons';
+import { Typography, Input, Form, Radio, Space, Checkbox, Select, Button, Flex, Popconfirm, Upload } from 'antd';
 
 const { Title, Text, Link } = Typography;
 
@@ -43,17 +44,6 @@ export default function Edit() {
       },
       {
         id: 5,
-        type: 'select',
-        text: 'Quale dei seguenti è un tipo di dato primitivo in JavaScript?',
-        answers: [
-          { id: 1, text: 'string' },
-          { id: 2, text: 'array' },
-          { id: 3, text: 'object' },
-          { id: 4, text: 'function' },
-        ],
-      },
-      {
-        id: 6,
         type: 'text',
         text: 'Inserisci la keyword mancante',
         code: `public class HelloWorld {
@@ -82,8 +72,52 @@ export default function Edit() {
           <Input />
         </Form.Item>
         {exercise.questions.map(question => (
-          <Flex>
-            
+          <Flex vertical>
+            <Popconfirm
+              placement="topLeft"
+              title="Elimina domanda"
+              description="Vuoi veramente eliminare questa domanda?"
+              okText="Elimina"
+              cancelText="Annulla"
+            >
+              <Link><DeleteOutlined /></Link>
+            </Popconfirm>
+            <Form.Item
+              key={question.id}
+              name={question.id}
+              label={question.text}
+            >
+              {question.type === 'radio' && (
+                <Radio.Group>
+                  <Space direction="vertical">
+                    {question.answers.map(answer => (
+                      <Radio key={answer.id} value={answer.id}>{answer.text}</Radio>
+                    ))}
+                  </Space>
+                </Radio.Group>
+              )}
+              {question.type === 'checkbox' && (
+                <Checkbox.Group>
+                  <Space direction="vertical">
+                    {question.answers.map(answer => (
+                      <Checkbox key={answer.id} value={answer.id}>{answer.text}</Checkbox>
+                    ))}
+                  </Space>
+                </Checkbox.Group>
+              )}
+              {question.type === 'text' && (
+                <Input disabled />
+              )}
+              {question.type === 'upload' && (
+                <Upload.Dragger disabled>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">Clicca o trascina file in quest'area per caricali</p>
+                  <p className="ant-upload-hint">Dimensione massima: 1MB</p>
+                </Upload.Dragger>
+              )}
+            </Form.Item>
           </Flex>
         ))}
         <Button type="primary" htmlType="submit">Conferma</Button>

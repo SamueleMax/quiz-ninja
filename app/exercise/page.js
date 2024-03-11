@@ -46,17 +46,6 @@ export default function Exercise() {
       },
       {
         id: 5,
-        type: 'select',
-        text: 'Quale dei seguenti è un tipo di dato primitivo in JavaScript?',
-        answers: [
-          { id: 1, text: 'string' },
-          { id: 2, text: 'array' },
-          { id: 3, text: 'object' },
-          { id: 4, text: 'function' },
-        ],
-      },
-      {
-        id: 6,
         type: 'text',
         text: 'Inserisci la keyword mancante',
         code: `public class HelloWorld {
@@ -115,15 +104,6 @@ export default function Exercise() {
                 <p className="ant-upload-text">Clicca o trascina file in quest'area per caricali</p>
                 <p className="ant-upload-hint">Dimensione massima: 1MB</p>
               </Upload.Dragger>
-            )}
-            {question.type === 'select' && (
-              <Select
-                showSearch
-                placeHolder="Seleziona una risposta"
-                optionFilterProp="children"
-                filterOption={(input, option) => option.label.toLowerCase().includes(input.toLowerCase())}
-                options={question.answers.map(answer => ({label: answer.text, value: answer.id}))}
-              />
             )}
           </Form.Item>
         ))}
