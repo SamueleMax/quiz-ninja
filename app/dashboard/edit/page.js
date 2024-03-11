@@ -53,6 +53,17 @@ export default function Edit() {
     ],
   }
 
+  const exerciseAnswers = [
+    {
+      id: 1,
+      answer: 1,
+    },
+    {
+      id: 2,
+      answer: [1, 2],
+    },
+  ]
+
   return (
     <main style={{maxWidth: "1000px", margin: "auto"}}>
       <Title>Dashboard</Title>
