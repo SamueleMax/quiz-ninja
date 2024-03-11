@@ -72,6 +72,10 @@ export default function Edit() {
         layout="vertical"
         initialValues={{
           title: exercise.title,
+          ...exerciseAnswers.reduce((acc, exerciseAnswer) => {
+            acc[exerciseAnswer.id] = exerciseAnswer.answer;
+            return acc;
+          }, {}),
         }}
       >
         <Form.Item
