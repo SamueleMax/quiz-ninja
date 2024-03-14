@@ -53,13 +53,55 @@ export default function Edit() {
     ],
   }
 
+  const a = {
+    1: {
+      text: 'Il simbolo $',
+      choices: 1,
+      answers: {
+        1: 'Il simbolo $',
+        2: 'Il simbolo @',
+        3: 'Il simbolo #',
+        4: 'Il simbolo var',
+      },
+    },
+    2: {
+      text: 'Quali di queste sono parole chiave riservate in JavaScript?',
+      choices: [1, 2],
+      answers: {
+        1: 'function',
+        2: 'let',
+        3: 'var',
+        4: 'const',
+      },
+    },
+  }
+
+  // Create a const c with the same keys as a, but from exercise.questions
+  const c = exercise.questions.reduce((acc, question) => {
+    acc[question.id] = {
+      text: question.text,
+      choices: 'answers' in question && question.answers.map(answer => answer.correct && answer.id),
+      answers: 'answers' in question && question.answers.reduce((acc, answer) => {
+        acc[answer.id] = answer.text;
+        return acc;
+      }, {}),
+    };
+    if (acc[question.id].choices.length === 1) {
+      acc[question.id].choices = acc[question.id].choices[0];
+    }
+    return acc;
+  }, {});
+
   return (
     <main style={{maxWidth: "1000px", margin: "auto"}}>
       <Title>Dashboard</Title>
       <Form
         autoComplete="off"
         layout="vertical"
-        initialValues={initialValues}
+        initialValues={{
+          title: exercise.title,
+          ...c,
+        }}
       >
         <Form.Item
           name="title"
@@ -109,7 +151,6 @@ export default function Edit() {
             {'code' in question && (
               <Form.Item
                 name={[question.id, 'code']}
-                initialValue={question.code}
               >
                 <Input.TextArea rows={4} style={{marginBottom: '1rem'}} />
               </Form.Item>
