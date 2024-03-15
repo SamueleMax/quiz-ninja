@@ -81,6 +81,7 @@ export default function Edit() {
   for (const question of exercise.questions) {
     initialValues[question.id] = {};
     initialValues[question.id].text = question.text;
+    initialValues[question.id].code = question.code;
     if ('answers' in question) {
       initialValues[question.id].choices = [];
       initialValues[question.id].answers = {};
