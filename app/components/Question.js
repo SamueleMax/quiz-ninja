@@ -1,40 +1,40 @@
-import { Space, Radio, Checkbox, Input, Upload } from 'antd';
+import { Flex, Radio, Checkbox, Input, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 
-function RadioQuestion({ question, disabled, noText }) {
+function RadioQuestion({ question, disabled, editable }) {
   return (
     <Radio.Group>
-      <Space direction="vertical">
+      <Flex gap={editable && 35} vertical>
         {question.answers.map(answer => (
           <Radio
             key={answer.id}
             value={answer.id}
           >
-            {!noText && answer.text}
+            {!editable && answer.text}
           </Radio>
         ))}
-      </Space>
+      </Flex>
     </Radio.Group>
   );
 }
 
-function CheckboxQuestion({ question, disabled, noText }) {
+function CheckboxQuestion({ question, disabled, editable }) {
   return (
     <Checkbox.Group>
-      <Space direction="vertical">
+      <Flex gap={editable && 35} vertical>
         {question.answers.map(answer => (
           <Checkbox
             key={answer.id}
             value={answer.id}
           >
-            {!noText && answer.text}
+            {!editable && answer.text}
           </Checkbox>
         ))}
-      </Space>
+      </Flex>
     </Checkbox.Group>
   );
 }
@@ -65,12 +65,12 @@ function Code({ code }) {
   );
 }
 
-export default function Question({ question, disabled = false, noText = false }) {
+export default function Question({ question, disabled = false, editable = false }) {
     return (
       <>
         {'code' in question && <Code code={question.code} />}
-        {question.type === 'radio' && <RadioQuestion question={question} disabled={disabled} noText={noText} />}
-        {question.type === 'checkbox' && <CheckboxQuestion question={question} disabled={disabled} noText={noText} />}
+        {question.type === 'radio' && <RadioQuestion question={question} disabled={disabled} editable={editable} />}
+        {question.type === 'checkbox' && <CheckboxQuestion question={question} disabled={disabled} editable={editable} />}
         {question.type === 'text' && <TextQuestion question={question} disabled={disabled} />}
         {question.type === 'upload' && <UploadQuestion question={question} disabled={disabled} />}
       </>

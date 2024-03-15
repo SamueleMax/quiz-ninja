@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Typography, Input, Form, Button, Popconfirm } from 'antd';
+import { Typography, Input, Form, Button, Popconfirm, Flex } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 const { Title, Link } = Typography;
@@ -57,23 +57,26 @@ export default function Edit() {
     ],
   });
 
+
   function EditableQuestion({ question }) {
     return (
-      <>
+      <Flex vertical={question.type !== 'radio' && question.type !== 'checkbox'}>
         <Form.Item
           name={[question.id, 'choices']}
         >
-          <Question question={question} noText />
+          <Question question={question} editable />
         </Form.Item>
-        {question.type === 'radio' || question.type === 'checkbox' && question.answers.map(answer => (
-          <Form.Item
-            key={answer.id}
-            name={[question.id, 'answers', answer.id]}
-          >
-            <Input />
-          </Form.Item>
-        ))}
-      </>
+        <Flex vertical>
+          {(question.type === 'radio' || question.type === 'checkbox') && question.answers.map((answer, i) => (
+            <Form.Item
+              key={answer.id}
+              name={[question.id, 'answers', answer.id]}
+            >
+              <Input placeholder={"Risposta " + (parseInt(i) + 1)} />
+            </Form.Item>
+          ))}
+        </Flex>
+      </Flex>
     );
   }
 
@@ -115,7 +118,7 @@ export default function Edit() {
               key={question.id}
               name={[question.id, 'text']}
             >
-              <Input />
+              <Input placeholder={"Domanda " + question.id} />
             </Form.Item>
 
             <EditableQuestion question={question} />
