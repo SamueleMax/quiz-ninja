@@ -76,21 +76,25 @@ export default function Edit() {
     },
   }
 
-  // Create a const c with the same keys as a, but from exercise.questions
-  const c = exercise.questions.reduce((acc, question) => {
-    acc[question.id] = {
-      text: question.text,
-      choices: 'answers' in question && question.answers.map(answer => answer.correct && answer.id),
-      answers: 'answers' in question && question.answers.reduce((acc, answer) => {
-        acc[answer.id] = answer.text;
-        return acc;
-      }, {}),
-    };
-    if (acc[question.id].choices.length === 1) {
-      acc[question.id].choices = acc[question.id].choices[0];
+  const initialValues = {};
+  initialValues.title = exercise.title;
+  for (const question of exercise.questions) {
+    initialValues[question.id] = {};
+    initialValues[question.id].text = question.text;
+    if ('answers' in question) {
+      initialValues[question.id].choices = [];
+      initialValues[question.id].answers = {};
+      for (const answer of question.answers) {
+        initialValues[question.id].answers[answer.id] = answer.text;
+        if (answer.correct) {
+          initialValues[question.id].choices.push(answer.id);
+        }
+      }
+      if (initialValues[question.id].choices.length === 1) {
+        initialValues[question.id].choices = initialValues[question.id].choices[0];
+      }
     }
-    return acc;
-  }, {});
+  }
 
   return (
     <main style={{maxWidth: "1000px", margin: "auto"}}>
@@ -98,10 +102,7 @@ export default function Edit() {
       <Form
         autoComplete="off"
         layout="vertical"
-        initialValues={{
-          title: exercise.title,
-          ...c,
-        }}
+        initialValues={initialValues}
       >
         <Form.Item
           name="title"
