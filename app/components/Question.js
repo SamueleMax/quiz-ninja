@@ -5,7 +5,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 
-function RadioQuestion({ question }) {
+function RadioQuestion({ question, disabled, noText }) {
   return (
     <Radio.Group>
       <Space direction="vertical">
@@ -14,7 +14,7 @@ function RadioQuestion({ question }) {
             key={answer.id}
             value={answer.id}
           >
-            {answer.text}
+            {!noText && answer.text}
           </Radio>
         ))}
       </Space>
@@ -22,7 +22,7 @@ function RadioQuestion({ question }) {
   );
 }
 
-function CheckboxQuestion({ question }) {
+function CheckboxQuestion({ question, disabled, noText }) {
   return (
     <Checkbox.Group>
       <Space direction="vertical">
@@ -31,7 +31,7 @@ function CheckboxQuestion({ question }) {
             key={answer.id}
             value={answer.id}
           >
-            {answer.text}
+            {!noText && answer.text}
           </Checkbox>
         ))}
       </Space>
@@ -39,13 +39,13 @@ function CheckboxQuestion({ question }) {
   );
 }
 
-function TextQuestion({ question }) {
+function TextQuestion({ question, disabled }) {
   return (
-    <Input />
+    <Input placeholder="Risposta"  />
   );
 }
 
-function UploadQuestion({ question }) {
+function UploadQuestion({ question, disabled }) {
   return (
     <Upload.Dragger>
       <p className="ant-upload-drag-icon">
@@ -65,14 +65,14 @@ function Code({ code }) {
   );
 }
 
-export default function Question({question}) {
+export default function Question({ question, disabled = false, noText = false }) {
     return (
       <>
         {'code' in question && <Code code={question.code} />}
-        {question.type === 'radio' && <RadioQuestion question={question} />}
-        {question.type === 'checkbox' && <CheckboxQuestion question={question} />}
-        {question.type === 'text' && <TextQuestion question={question} />}
-        {question.type === 'upload' && <UploadQuestion question={question} />}
+        {question.type === 'radio' && <RadioQuestion question={question} disabled={disabled} noText={noText} />}
+        {question.type === 'checkbox' && <CheckboxQuestion question={question} disabled={disabled} noText={noText} />}
+        {question.type === 'text' && <TextQuestion question={question} disabled={disabled} />}
+        {question.type === 'upload' && <UploadQuestion question={question} disabled={disabled} />}
       </>
     );
 }

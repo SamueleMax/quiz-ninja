@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Typography, Input, Form, Flex, Popconfirm } from 'antd';
+import { Typography, Input, Form, Button, Popconfirm } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 const { Title, Link } = Typography;
@@ -57,8 +57,31 @@ export default function Edit() {
     ],
   });
 
-  function deleteQuestion() {
-    
+  function EditableQuestion({ question }) {
+    return (
+      <>
+        <Form.Item
+          name={[question.id, 'choices']}
+        >
+          <Question question={question} noText />
+        </Form.Item>
+        {question.type === 'radio' || question.type === 'checkbox' && question.answers.map(answer => (
+          <Form.Item
+            key={answer.id}
+            name={[question.id, 'answers', answer.id]}
+          >
+            <Input />
+          </Form.Item>
+        ))}
+      </>
+    );
+  }
+
+  function deleteQuestion(id) {
+    setExercise({
+      ...exercise,
+      questions: exercise.questions.filter(question => question.id !== id),
+    })
   }
 
   return (
@@ -80,10 +103,10 @@ export default function Edit() {
             <Popconfirm
               placement="topLeft"
               title="Elimina domanda"
-              descriptin="Vuoi veramente eliminare questa domanda?"
+              description="Vuoi veramente eliminare questa domanda?"
               okText="Elimina"
               cancelText="Annulla"
-              onConfirm={deleteQuestion}
+              onConfirm={() => deleteQuestion(question.id)}
             >
               <Link style={{fontSize: "1.2rem"}}><DeleteOutlined /></Link>
             </Popconfirm>
@@ -95,13 +118,11 @@ export default function Edit() {
               <Input />
             </Form.Item>
 
-            <Form.Item
-              name={[question.id, 'choices']}
-            >
-              <Question question={question} />
-            </Form.Item>
+            <EditableQuestion question={question} />
           </>
         ))}
+
+        <Button type="primary" htmlType="submit">Conferma</Button>
       </Form>
     </main>
   );
