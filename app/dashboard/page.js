@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Typography, Table, Button, Modal, Flex } from 'antd';
 import { DeleteOutlined, PlusOutlined, FundViewOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';

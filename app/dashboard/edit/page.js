@@ -1,12 +1,16 @@
-'use client'
+'use client';
 
-import { DeleteOutlined, InboxOutlined, EditOutlined } from '@ant-design/icons';
-import { Typography, Input, Form, Radio, Space, Checkbox, Select, Button, Flex, Popconfirm, Upload } from 'antd';
+import { useState } from 'react';
 
-const { Title, Text, Link } = Typography;
+import { Typography, Input, Form, Flex, Popconfirm } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+
+const { Title, Link } = Typography;
+
+import Question from '@/app/components/Question';
 
 export default function Edit() {
-  const exercise = {
+  const [exercise, setExercise] = useState({
     id: 1,
     title: 'Le variabili',
     questions: [
@@ -51,50 +55,10 @@ export default function Edit() {
 }`
       }
     ],
-  }
+  });
 
-  const a = {
-    1: {
-      text: 'Il simbolo $',
-      choices: 1,
-      answers: {
-        1: 'Il simbolo $',
-        2: 'Il simbolo @',
-        3: 'Il simbolo #',
-        4: 'Il simbolo var',
-      },
-    },
-    2: {
-      text: 'Quali di queste sono parole chiave riservate in JavaScript?',
-      choices: [1, 2],
-      answers: {
-        1: 'function',
-        2: 'let',
-        3: 'var',
-        4: 'const',
-      },
-    },
-  }
-
-  const initialValues = {};
-  initialValues.title = exercise.title;
-  for (const question of exercise.questions) {
-    initialValues[question.id] = {};
-    initialValues[question.id].text = question.text;
-    initialValues[question.id].code = question.code;
-    if ('answers' in question) {
-      initialValues[question.id].choices = [];
-      initialValues[question.id].answers = {};
-      for (const answer of question.answers) {
-        initialValues[question.id].answers[answer.id] = answer.text;
-        if (answer.correct) {
-          initialValues[question.id].choices.push(answer.id);
-        }
-      }
-      if (initialValues[question.id].choices.length === 1) {
-        initialValues[question.id].choices = initialValues[question.id].choices[0];
-      }
-    }
+  function deleteQuestion() {
+    
   }
 
   return (
@@ -103,7 +67,6 @@ export default function Edit() {
       <Form
         autoComplete="off"
         layout="vertical"
-        initialValues={initialValues}
       >
         <Form.Item
           name="title"
@@ -111,100 +74,34 @@ export default function Edit() {
         >
           <Input />
         </Form.Item>
+
         {exercise.questions.map(question => (
-          <Flex gap={10} vertical>
-            <Space>
-              <Popconfirm
-                placement="topLeft"
-                title="Elimina domanda"
-                description="Vuoi veramente eliminare questa domanda?"
-                okText="Elimina"
-                cancelText="Annulla"
-              >
-                <Link style={{fontSize: '1.2rem'}}><DeleteOutlined /></Link>
-              </Popconfirm>
-              {question.type !== 'upload' && (
-                <Select
-                  defaultValue={question.type}
-                  style={{width: '10rem'}}
-                  options={[
-                    {
-                      value: 'radio',
-                      label: 'Radio',
-                    },
-                    {
-                      value: 'checkbox',
-                      label: 'Checkbox',
-                    },
-                    {
-                      value: 'text',
-                      label: 'Text',
-                    },
-                  ]}
-                />
-              )}
-            </Space>
+          <>
+            <Popconfirm
+              placement="topLeft"
+              title="Elimina domanda"
+              descriptin="Vuoi veramente eliminare questa domanda?"
+              okText="Elimina"
+              cancelText="Annulla"
+              onConfirm={deleteQuestion}
+            >
+              <Link style={{fontSize: "1.2rem"}}><DeleteOutlined /></Link>
+            </Popconfirm>
+
             <Form.Item
               key={question.id}
               name={[question.id, 'text']}
             >
               <Input />
             </Form.Item>
-            {'code' in question && (
-              <Form.Item
-                name={[question.id, 'code']}
-              >
-                <Input.TextArea rows={4} style={{marginBottom: '1rem'}} />
-              </Form.Item>
-            )}
-            <Flex gap={10} align="center">
-              <Form.Item
-                name={[question.id, 'choices']}
-              >
-                {question.type === 'radio' && (
-                  <Radio.Group>
-                    <Flex gap={34} vertical>
-                      {question.answers.map(answer => (
-                        <Radio key={answer.id} value={answer.id} />
-                      ))}
-                    </Flex>
-                  </Radio.Group>
-                )}
-                {question.type === 'checkbox' && (
-                  <Checkbox.Group>
-                    <Flex gap={34} vertical>
-                      {question.answers.map(answer => (
-                        <Checkbox key={answer.id} value={answer.id} />
-                      ))}
-                    </Flex>
-                  </Checkbox.Group>
-                )}
-                {question.type === 'text' && (
-                  <Input disabled />
-                )}
-                {question.type === 'upload' && (
-                  <Upload.Dragger disabled>
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">Clicca o trascina file in quest'area per caricali</p>
-                    <p className="ant-upload-hint">Dimensione massima: 1MB</p>
-                  </Upload.Dragger>
-                )}
-              </Form.Item>
-              <Flex vertical>
-                {'answers' in question && question.answers.map(answer => (
-                  <Form.Item
-                    name={[question.id, 'answers', answer.id]}
-                  >
-                    <Input />
-                  </Form.Item>
-                ))}
-              </Flex>
-            </Flex>
-          </Flex>
+
+            <Form.Item
+              name={[question.id, 'choices']}
+            >
+              <Question question={question} />
+            </Form.Item>
+          </>
         ))}
-        <Button type="primary" htmlType="submit">Conferma</Button>
       </Form>
     </main>
   );

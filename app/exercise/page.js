@@ -1,11 +1,10 @@
-'use client'
+'use client';
 
-import { Typography, Form, Radio, Space, Checkbox, Input, Button, Upload, Select } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { Typography, Form, Button } from 'antd';
 
-const { Title, Text, Link } = Typography;
+const { Title } = Typography;
+
+import Question from '../components/Question';
 
 export default function Exercise() {
   const exercise = {
@@ -70,41 +69,7 @@ export default function Exercise() {
             name={question.id}
             label={question.text}
           >
-            {'code' in question && (
-              <SyntaxHighlighter showLineNumbers language="java" style={dracula}>
-                {question.code}
-              </SyntaxHighlighter>
-            )}
-            {question.type === 'radio' && (
-              <Radio.Group>
-                <Space direction="vertical">
-                  {question.answers.map(answer => (
-                    <Radio key={answer.id} value={answer.id}>{answer.text}</Radio>
-                  ))}
-                </Space>
-              </Radio.Group>
-            )}
-            {question.type === 'checkbox' && (
-              <Checkbox.Group>
-                <Space direction="vertical">
-                  {question.answers.map(answer => (
-                    <Checkbox key={answer.id} value={answer.id}>{answer.text}</Checkbox>
-                  ))}
-                </Space>
-              </Checkbox.Group>
-            )}
-            {question.type === 'text' && (
-              <Input />
-            )}
-            {question.type === 'upload' && (
-              <Upload.Dragger>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">Clicca o trascina file in quest'area per caricali</p>
-                <p className="ant-upload-hint">Dimensione massima: 1MB</p>
-              </Upload.Dragger>
-            )}
+            <Question question={question} />
           </Form.Item>
         ))}
         <Button type="primary" htmlType="submit">Invia</Button>

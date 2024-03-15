@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Typography, Table, Tag } from 'antd';
 import { ArrowRightOutlined } from '@ant-design/icons';
