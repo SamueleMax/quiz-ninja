@@ -51,7 +51,9 @@ export default function Edit() {
         type: 'text',
         text: 'Inserisci la keyword mancante',
         code: `public class HelloWorld {
-  public static void main(String[]trans
+  public static void main(String[] args) {
+    System.out._______("Hello, World!");
+  }
 }`
       }
     ],
