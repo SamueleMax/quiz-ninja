@@ -59,6 +59,24 @@ export default function Edit() {
     ],
   });
 
+  const initialValues = {}
+  for (const question of exercise.questions) {
+    initialValues[question.id] = {};
+    initialValues[question.id].text = question.text;
+    if ('answers' in question) {
+      initialValues[question.id].answers = {};
+      initialValues[question.id].choices = [];
+      for (const answer of question.answers) {
+        initialValues[question.id].answers[answer.id] = answer.text;
+        if (answer.correct) {
+          initialValues[question.id].choices.push(answer.id);
+        }
+      }
+      if (initialValues[question.id].choices.length === 1) {
+        initialValues[question.id].choices = initialValues[question.id].choices[0];
+      }
+    }
+  }
 
   function EditableQuestion({ question }) {
     return (
@@ -95,6 +113,7 @@ export default function Edit() {
       <Form
         autoComplete="off"
         layout="vertical"
+        initialValues={initialValues}
       >
         <Form.Item
           name="title"
